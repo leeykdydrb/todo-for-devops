@@ -20,8 +20,8 @@ jobs:
 
       - name: 🏗 Build and push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/todo-app .
-          docker push ${{ secrets.DOCKER_USERNAME }}/todo-app
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/todo-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
 
       - name: 🔐 Azure CLI login
         uses: azure/login@v1
@@ -34,13 +34,14 @@ jobs:
             az webapp create \
               --resource-group rg-appservice-infrastructure-dev-04 \
               --plan asp-dev \
-              --name todo-webapp-dev
+              --name todo-webapp-dev \
+              --deployment-container-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
 
             # 바로 컨테이너 설정
             az webapp config container set \
               --name todo-webapp-dev \
               --resource-group rg-appservice-infrastructure-dev-04 \
-              --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-next-app:latest \
+              --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
               --docker-registry-server-url https://index.docker.io
           fi
 
