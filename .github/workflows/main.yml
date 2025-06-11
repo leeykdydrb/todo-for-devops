@@ -30,20 +30,41 @@ jobs:
 
       - name: 🛠 Create Web App (if not exists)
         run: |
-          if ! az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &> /dev/null; then
-            az webapp create \
-              --resource-group rg-appservice-infrastructure-dev-04 \
-              --plan asp-dev \
-              --name todo-webapp-dev \
-              --deployment-container-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
+           echo "🔍 현재 Azure 구독 확인 중..."
+           az account show
 
-            # 바로 컨테이너 설정
-            az webapp config container set \
-              --name todo-webapp-dev \
-              --resource-group rg-appservice-infrastructure-dev-04 \
-              --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
-              --docker-registry-server-url https://index.docker.io
-          fi
+           echo "🔍 Web App 존재 여부 확인 중..."
+           EXISTING=$(az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 --query "name" -o tsv 2>/dev/null)
+
+           if [ -z "$EXISTING" ]; then
+             echo "🆕 Web App이 존재하지 않아 생성합니다..."
+             az webapp create \
+               --resource-group rg-appservice-infrastructure-dev-04 \
+               --plan asp-dev \
+               --name todo-webapp-dev || { echo "❌ Web App 생성 실패"; exit 1; }
+           else
+             echo "✅ Web App이 이미 존재합니다. 생성하지 않습니다."
+           fi
+
+           echo "⚙️ 컨테이너 설정 적용 중..."
+           az webapp config container set \
+             --name todo-webapp-dev \
+             --resource-group rg-appservice-infrastructure-dev-04 \
+             --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
+             --docker-registry-server-url https://index.docker.io
+#          if ! az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &> /dev/null; then
+#            az webapp create \
+#              --resource-group rg-appservice-infrastructure-dev-04 \
+#              --plan asp-dev \
+#              --name todo-webapp-dev \
+#
+#            # 바로 컨테이너 설정
+#            az webapp config container set \
+#              --name todo-webapp-dev \
+#              --resource-group rg-appservice-infrastructure-dev-04 \
+#              --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
+#              --docker-registry-server-url https://index.docker.io
+#          fi
 
       - name: ⚙️ Set App Service port setting
         run: |
