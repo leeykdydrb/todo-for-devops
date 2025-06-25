@@ -35,7 +35,7 @@ jobs:
 
            echo "🔍 Web App 존재 여부 확인 중..."
            if az webapp show --name tklee-todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &>/dev/null; then
-             echo "✅ Web App이 이미 존재합니다. 생성하지 않습니다."
+             echo "✅ Web App이 이미 존재합니다."
            else
              echo "🆕 Web App이 존재하지 않아 생성합니다..."
              az webapp create \
