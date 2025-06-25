@@ -34,19 +34,19 @@ jobs:
            az account show
 
            echo "🔍 Web App 존재 여부 확인 중..."
-           if az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &>/dev/null; then
+           if az webapp show --name tklee-todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &>/dev/null; then
              echo "✅ Web App이 이미 존재합니다. 생성하지 않습니다."
            else
              echo "🆕 Web App이 존재하지 않아 생성합니다..."
              az webapp create \
                --resource-group rg-appservice-infrastructure-dev-04 \
                --plan asp-dev \
-               --name todo-webapp-dev || { echo "❌ Web App 생성 실패"; exit 1; }
+               --name tklee-todo-webapp-dev || { echo "❌ Web App 생성 실패"; exit 1; }
            fi
 
            echo "⚙️ 컨테이너 설정 적용 중..."
            az webapp config container set \
-             --name todo-webapp-dev \
+             --name tklee-todo-webapp-dev \
              --resource-group rg-appservice-infrastructure-dev-04 \
              --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
              --docker-registry-server-url https://index.docker.io
@@ -85,14 +85,14 @@ jobs:
       - name: ⚙️ Set App Service port setting
         run: |
           az webapp config appsettings set \
-            --name todo-webapp-dev \
+            --name tklee-todo-webapp-dev \
             --resource-group rg-appservice-infrastructure-dev-04 \
             --settings WEBSITES_PORT=3000
 
       - name: 🚀 Configure App Service to use Docker Hub
         run: |
           az webapp config container set \
-            --name todo-webapp-dev \
+            --name tklee-todo-webapp-dev \
             --resource-group rg-appservice-infrastructure-dev-04 \
             --container-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
             --container-registry-url https://index.docker.io
@@ -100,5 +100,5 @@ jobs:
       - name: 🔁 Restart App Service
         run: |
           az webapp restart \
-            --name todo-webapp-dev \
+            --name tklee-todo-webapp-dev \
             --resource-group rg-appservice-infrastructure-dev-04
