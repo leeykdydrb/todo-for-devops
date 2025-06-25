@@ -10,10 +10,10 @@ jobs:
 
     steps:
       - name: 📥 Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🐳 Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -34,7 +34,7 @@ jobs:
            az account show
 
            echo "🔍 Web App 존재 여부 확인 중..."
-           EXISTING=$(az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 --query "name" -o tsv 2>/dev/null)
+           EXISTING=$(az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &>/dev/null)
 
            if [ -z "$EXISTING" ]; then
              echo "🆕 Web App이 존재하지 않아 생성합니다..."
