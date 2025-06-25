@@ -44,12 +44,12 @@ jobs:
                --name tklee-todo-webapp-dev || { echo "❌ Web App 생성 실패"; exit 1; }
            fi
 
-           echo "⚙️ 컨테이너 설정 적용 중..."
-           az webapp config container set \
-             --name tklee-todo-webapp-dev \
-             --resource-group rg-appservice-infrastructure-dev-04 \
-             --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
-             --docker-registry-server-url https://index.docker.io
+          #  echo "⚙️ 컨테이너 설정 적용 중..."
+          #  az webapp config container set \
+          #    --name tklee-todo-webapp-dev \
+          #    --resource-group rg-appservice-infrastructure-dev-04 \
+          #    --docker-custom-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
+          #    --docker-registry-server-url https://index.docker.io
           #  EXISTING=$(az webapp show --name todo-webapp-dev --resource-group rg-appservice-infrastructure-dev-04 &>/dev/null)
 
           #  if [ -z "$EXISTING" ]; then
