@@ -78,7 +78,7 @@ jobs:
           az webapp config container set \
             --name todo-webapp-dev \
             --resource-group rg-appservice-infrastructure-dev-04 \
-            --container-image-name ${{ secrets.DOCKER_USERNAME }}/todo-next-app:latest \
+            --container-image-name ${{ secrets.DOCKER_USERNAME }}/todo-app:latest \
             --container-registry-url https://index.docker.io
 
       - name: 🔁 Restart App Service
