@@ -42,7 +42,8 @@ jobs:
                --resource-group rg-appservice-infrastructure-dev-04 \
                --plan asp-dev \
                --name tklee-todo-webapp-dev
-               --runtime "DOCKER|nginx:alpine" || { echo "❌ Web App 생성 실패"; exit 1; }
+               --runtime "DOCKER|nginx:alpine"
+               --deployment-container-image-name "nginx:alpine" || { echo "❌ Web App 생성 실패"; exit 1; }
            fi
 
           #  echo "⚙️ 컨테이너 설정 적용 중..."
