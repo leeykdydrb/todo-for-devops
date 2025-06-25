@@ -41,7 +41,8 @@ jobs:
              az webapp create \
                --resource-group rg-appservice-infrastructure-dev-04 \
                --plan asp-dev \
-               --name tklee-todo-webapp-dev || { echo "❌ Web App 생성 실패"; exit 1; }
+               --name tklee-todo-webapp-dev
+               --deployment-container-image-name "nginx:alpine" || { echo "❌ Web App 생성 실패"; exit 1; }
            fi
 
           #  echo "⚙️ 컨테이너 설정 적용 중..."
